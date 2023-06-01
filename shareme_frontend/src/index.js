@@ -1,0 +1,15 @@
+import React from'react';
+import { createRoot } from 'react-dom/client';
+import {BrowserRouter as Router} from 'react-router-dom'
+
+import App from './App';
+import './index.css'
+
+
+// const container = document.getElementById('root');
+const Home = createRoot(document.getElementById('root')); // createRoot(container!) if you use TypeScript
+Home.render(
+    <Router>
+        <App tab="home" />
+    </Router>
+    );
