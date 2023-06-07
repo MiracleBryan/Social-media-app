@@ -1,16 +1,16 @@
 export default{
     name:'user',
-    title:'userTitle',
+    title:'User',
     type:'document',
     fields:[
         {
-            name: 'userName',
-            title:'userNameTitle',
+            name:'userName',
+            title:'UserName',
             type:'string'
         },
         {
-            name: 'image',
-            title:'imageTitle',
+            name:'image',
+            title:'Image',
             type:'string'
         },
     ]

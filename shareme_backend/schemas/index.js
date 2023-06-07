@@ -4,5 +4,4 @@ import postedBy from "./postedBy";
 import save from "./save";
 import user from "./user";
 
-
-export const schemaTypes = [user,pin,comment,postedBy,save]
+export const schemaTypes = [user,comment,pin,save,postedBy]

@@ -1,45 +1,49 @@
-import React,{ useEffect } from 'react';
+import React from 'react';
 import {GoogleLogin, GoogleOAuthProvider} from '@react-oauth/google';
 
-
+import jwt_decode from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
-import { FcGoogle } from 'react-icons/fc';
+// import { FcGoogle } from 'react-icons/fc';
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logowhite.png';
-
 
 import { client } from '../client';
 
 
 
 const Login = () => {
-
-  // useEffect(()=>{
-  //   const initClient = () => {
-  //     gapi.client.init({
-  //       clientId: process.env.REACT_APP_GOOGLE_API_TOKEN,
-  //       scope:'',
-  //     })
-  //   }
-  //   gapi.load('client:auth2', initClient)
-  // })
-
+  const clientID = '257306832534-u4rr6eis21h2sn1pmpmem4ts6r3o55j7.apps.googleusercontent.com'
+  
   const navigate = useNavigate();
   const responseGoogle = (response) => {
-    console.log(response)
-    // localStorage.setItem('user', JSON.stringify(response.profileObj));
 
-    // const { name, googleId, imageUrl } = response.profileObj;
-    // const doc = {
-    //   _id: googleId,
-    //   _type: 'user',
-    //   userName: name,
-    //   image: imageUrl,
-    // };
-    // client.createIfNotExists(doc).then(() => {
-    //   navigate('/', { replace: true });
-    // });
-    navigate('/', { replace: true });
+    localStorage.setItem('user', JSON.stringify(response.credential));
+    let res = localStorage.getItem
+    console.log(res)
+    let decodedHeader = jwt_decode(response.credential)
+    console.log(decodedHeader)
+    const { name, sub, picture } = decodedHeader ;
+    
+    const doc = {
+      _id: sub,
+      _type: 'user',
+      userName: name,
+      image: picture,
+    };
+    
+    console.log('doc:'+doc._id)
+    console.log('doc:'+doc.userName)
+    console.log('doc:'+doc.image)
+
+    client.createIfNotExists(doc)
+      .then(() => {
+        navigate('/', { replace: true });
+    });
+    
+    
+    
+    
+    // navigate('/', { replace: true });
   };
 
   return (
@@ -57,67 +61,34 @@ const Login = () => {
 
         <div className="absolute flex flex-col justify-center items-center top-0 right-0 left-0 bottom-0    bg-blackOverlay">
           <div className="p-5">
-            <img src={logo} width="130px" />
+            <img src={logo} alt='Shareme Logo' width="130px" />
           </div>
 
           <div className="shadow-2xl">
-            {/* <GoogleOAuthProvider 
-              clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
-              render={(renderProps)=>(
-                <button
-                  type="button"
-                  className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <FcGoogle className="mr-4" /> Sign in with google
-                </button>
-              )}
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy="single_host_origin"
-            /> */}
-
-            <GoogleOAuthProvider
-              clientId={`${process.env.REACT_APP_GOOGLE_API_TOKEN}`}
-            >
+            
+{/* one correct version */}
+            <GoogleOAuthProvider clientId= {clientID}>
               <GoogleLogin
-              
+                
+                onSuccess={responseGoogle}
+                onError={() => {
+                  console.log('Login Failed');
+                }}
+              />
+            </GoogleOAuthProvider>
+
+
+              {/* <GoogleLogin
+                clientId={clientID}
+                buttonText='Welcome to login with Google'
                 onSuccess={responseGoogle}
                 onFailure={(fail)=>{
                   console.log('Login Failed');
                   console.log(fail);
                 }}
-                cookiePolicy="single_host_origin"
-              />
-              
-              {/* <GoogleLogin
-                onSuccess={responseGoogle}
-          
-                onError={() => {
-                  console.log('Login Failed');
-            }}
+                cookiePolicy={'single_host_origin'}
+                isSignedIn={true}
               /> */}
-              
-
-
-              {/* <GoogleLogin
-              render={(renderProps) => (
-                <button
-                  type="button"
-                  className="bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none"
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                >
-                  <FcGoogle className="mr-4" /> Sign in with google
-                </button>
-              )}
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
-              cookiePolicy="single_host_origin"
-              /> */}
-
-            </GoogleOAuthProvider>
             
               
             
