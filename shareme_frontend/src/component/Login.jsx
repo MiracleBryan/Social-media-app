@@ -17,12 +17,13 @@ const Login = () => {
   const navigate = useNavigate();
   const responseGoogle = (response) => {
 
-    // localStorage.setItem('user', JSON.stringify(response.credential));
+    localStorage.setItem('user', JSON.stringify(response.credential));
     
-    let res = localStorage.getItem
-    console.log('Res:',res)
+
+    // let res = localStorage.getItem
+    // console.log('Res:',res)
     let decodedHeader = jwt_decode(response.credential)
-    console.log(decodedHeader)
+    // console.log(decodedHeader)
     const { name, sub, picture } = decodedHeader ;
     
     const doc = {
@@ -32,22 +33,10 @@ const Login = () => {
       image: picture,
     };
 
-    console.log('doc:'+doc._id.type)
-    console.log('doc:'+doc._id)
-    console.log('doc:'+doc.userName)
-    console.log('doc:'+doc.image)
-
-
     client.createIfNotExists(doc)
       .then(() => {
         navigate('/', { replace: true });
     });
-    // navigate('/', { replace: true });
-    
-    
-    
-    
-    // navigate('/', { replace: true });
   };
 
   return (
