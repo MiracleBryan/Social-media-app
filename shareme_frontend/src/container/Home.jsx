@@ -3,7 +3,7 @@ import {HiMenu} from 'react-icons/hi'
 import {AiFillCloseCircle} from 'react-icons/ai'
 import {Link, Route, Routes} from 'react-router-dom'
 
-import { Sidebar, UserProfile } from '../component';
+import { Sidebar, UserProfile} from '../component';
 
 import {client} from '../client'
 import logo from '../assets/logo.png'
@@ -18,14 +18,14 @@ const Home = () => {
 
   const userInfo = localStorage.getItem('user') !== 'undefined' 
     ? JSON.parse(localStorage.getItem('user'))
-    : localStorage.clear()
+    : localStorage.clear();
   
   useEffect(()=>{
     scrollRef.current.scrollTo(0,0)
   })
 
   useEffect(()=>{
-    const query = userQuery(userInfo?.sub)
+    const query = userQuery(userInfo?.googleId)
     client.fetch(query)
       .then((data)=>{
         setUser(data[0])
@@ -44,7 +44,7 @@ const Home = () => {
             <img src={logo} alt='logo' className='w-28'/>
           </Link>
           <Link to={`user-profile/${user?._id}`}>
-            <img src={user?.image} alt='logo' className='w-28'/>
+            <img src={user ?user.image:""} alt='logo' className='w-28'/>
           </Link>
         </div>
         {toggleSiderbar && (

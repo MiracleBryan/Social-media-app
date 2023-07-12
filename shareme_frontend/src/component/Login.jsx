@@ -23,7 +23,7 @@ const Login = () => {
     // let res = localStorage.getItem
     // console.log('Res:',res)
     let decodedHeader = jwt_decode(response.credential)
-    // console.log(decodedHeader)
+    console.log(decodedHeader)
     const { name, sub, picture } = decodedHeader ;
     
     const doc = {
@@ -32,7 +32,7 @@ const Login = () => {
       userName: name,
       image: picture,
     };
-
+    // console.log('id:',doc._id)
     client.createIfNotExists(doc)
       .then(() => {
         navigate('/', { replace: true });
